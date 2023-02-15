@@ -56,7 +56,12 @@ int main(int argc, char **argv)
 	}
 
 	do {
+<<<<<<< HEAD
 		/* Check if the input is associated with the command line terminal */
+=======
+		/*isatty is used to determine if a given file descriptor refers to a terminal*/
+		/*If 1 then it's a terminal*/
+>>>>>>> 8572c3257f68d4179cbbab82912df99ada1a972f
 		if (isatty(0) == 1)
 			printf("$ ");
 
