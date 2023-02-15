@@ -1,24 +1,51 @@
 #include "main.h"
 
-void exit_command_check(char *command)
+
+
+void exit_command_check(char *arg0, char *arg1)
 {
-	if (strcmp(command, "exit") == 0)
+	if ((strcmp(arg0, "exit") == 0) && (arg1 == NULL))
 		exit(0);
 }
 
+char **tokens_array(char *cmd_input, int *word_Count)
+{
+	char *cmd_Tokens;
+	char **temp_args;
+	int i;
+
+	temp_args = malloc(strlen(cmd_input) * sizeof(char*));
+
+	
+	cmd_Tokens = strtok(cmd_input, " \n");
+
+	i = 0;
+
+	while (cmd_Tokens != NULL)
+	{
+		temp_args[i] = malloc(sizeof(char) * strlen(cmd_Tokens));
+
+		strcpy(temp_args[i], cmd_Tokens);
+		i++;
+		cmd_Tokens = strtok(NULL, " \n");
+	}
+
+	*word_Count = i;
+	return (temp_args);
+
+}
 /**
- *
- *
  *
  */
 int main(int argc, char **argv)
 {
 	int status, i;
 	/* for wait system call of the parent process */
-	char *command, *cmd_Tokens;
+	char *command;
 	size_t buffsize = 0;
 	pid_t process;
-	char *args[1000];
+	int word_Count;
+
 	ssize_t input;
 
 	command = malloc(sizeof(char) * buffsize);
@@ -40,18 +67,8 @@ int main(int argc, char **argv)
 			free(command);
 		}
 
-		cmd_Tokens = strtok(command, " \n");
-		args[0] = cmd_Tokens;
-
-		exit_command_check(command);
-		
-		i = 1;
-		while(cmd_Tokens != NULL)
-		{
-			cmd_Tokens = strtok(NULL, " \n");
-			args[i] = cmd_Tokens;
-			i++;
-		}
+		char **args = tokens_array(command, &word_Count);
+		exit_command_check(args[0], args[1]);
 
 		process = fork();
 
@@ -73,6 +90,11 @@ int main(int argc, char **argv)
 		{
 			wait(&status);
 			printf("Parent\n");
+			free(command);
+			/* to free memory allocation for array of token(words) */
+			for (i = 0; i < word_Count; i++)
+				free(args[i]);
+			free(args);
 		}
 	}while(true);
 	return (0);
