@@ -13,6 +13,6 @@ extern char **environ;
 #include <stdbool.h>
 
 int main(int argc, char **argv);
-void exit_command_check(char *arg0, char *arg1);
+void exit_code_check(char *command, char **args);
 
 #endif

@@ -2,11 +2,15 @@
 
 
 
-void exit_command_check(char *arg0, char *arg1)
+/*void exit_code_check(char *command, char **args)
 {
-	if ((strcmp(arg0, "exit") == 0) && (arg1 == NULL))
+	if ((strcmp(args[0], "exit") == 0) && (args[1] == NULL))
+	{
+		free(args);
+		free(command);
 		exit(0);
-}
+	}
+}*/
 
 char **tokens_array(char *cmd_input, int *word_Count)
 {
@@ -65,7 +69,8 @@ int main(int argc, char **argv)
 		return (1);
 	}
 
-	do {
+	while(1)
+	{
 		/* Check if the input is associated with the command line terminal */
 		if (isatty(0) == 1)
 			printf("$ ");
@@ -81,23 +86,24 @@ int main(int argc, char **argv)
 
 		/* Generate the command and its arguments to be executed */
 		char **args = tokens_array(command, &word_Count);
+
 		/* check for exit command */
-		exit_command_check(args[0], args[1]);
+		exit_code_check(command, args);
 
 		for (i = 0; i < strlen(args[0]); i++)
 		{
-			if (args[0][i] == '/')
-				break;
-			else
+			char *path = getenv("PATH");
+			char *path_dir = strtok(path, ":");
+			if (args[0][i] != '/')
 			{
 				/* get the PATH environment Variables */
-				char *path = getenv("PATH");
-				char *path_dir = strtok(path, ":");
+				//char *path = getenv("PATH");
+				//char *path_dir = strtok(path, ":");
 
 				while (path_dir != NULL)
 				{
 					/*memory alloction for the full path to the command to become the new args[0]*/
-					char *p_arg0 = malloc(strlen(path_dir) + strlen(args[0]) + 2);
+					char *p_arg0 = malloc(strlen(path_dir) + strlen(args[0]) + 1);
 					if (p_arg0 == NULL)
 					{
 						perror(argv[0]);
@@ -105,9 +111,9 @@ int main(int argc, char **argv)
 					}
 					/* to construct the full path to the command */
 					sprintf (p_arg0, "%s/%s", path_dir, args[0]);
-
 					if (access(p_arg0, X_OK) == 0)
 					{
+						printf("%s\n",p_arg0);
 						args[0] = p_arg0;
 						break;
 					}
@@ -135,13 +141,15 @@ int main(int argc, char **argv)
 		else /* if parent process */
 		{
 			wait(&status);
-			sleep(4);
-			free(command);
-			/* to free memory allocation for array of token(words) */
-			for (j = 1; i < word_Count; j++)
-				free(args[j]);
-			free(args);
+			printf("Parent process\n");
+			sleep(1);
+
+			//to free memory allocation for array of token(words)
+			/*for (j = 0; i < word_Count; j++)
+				free(args[j]);*/
+			//free(args);
+			//free(command);
 		}
-	}while(true);
+	}
 	return (0);
 }
