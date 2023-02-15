@@ -8,13 +8,14 @@ void exit_command_check(char *arg0, char *arg1)
 		exit(0);
 }
 
-char **tokens_array(char *cmd_input)
+char **tokens_array(char *cmd_input, int *word_Count)
 {
 	char *cmd_Tokens;
 	char **temp_args;
 	int i;
 
 	temp_args = malloc(strlen(cmd_input) * sizeof(char*));
+
 	
 	cmd_Tokens = strtok(cmd_input, " \n");
 
@@ -29,7 +30,7 @@ char **tokens_array(char *cmd_input)
 		cmd_Tokens = strtok(NULL, " \n");
 	}
 
-	/* *num_words = i; */
+	*word_Count = i;
 	return (temp_args);
 
 }
@@ -43,6 +44,7 @@ int main(int argc, char **argv)
 	char *command;
 	size_t buffsize = 0;
 	pid_t process;
+	int word_Count;
 
 	ssize_t input;
 
@@ -65,7 +67,7 @@ int main(int argc, char **argv)
 			free(command);
 		}
 
-		char **args = tokens_array(command);
+		char **args = tokens_array(command, &word_Count);
 		exit_command_check(args[0], args[1]);
 
 		process = fork();
@@ -89,6 +91,10 @@ int main(int argc, char **argv)
 			wait(&status);
 			printf("Parent\n");
 			free(command);
+			/* to free memory allocation for array of token(words) */
+			for (i = 0; i < word_Count; i++)
+				free(args[i]);
+			free(args);
 		}
 	}while(true);
 	return (0);
