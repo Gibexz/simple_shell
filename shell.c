@@ -1,17 +1,6 @@
 #include "main.h"
 
 
-
-/*void exit_code_check(char *command, char **args)
-{
-	if ((strcmp(args[0], "exit") == 0) && (args[1] == NULL))
-	{
-		free(args);
-		free(command);
-		exit(0);
-	}
-}*/
-
 char **tokens_array(char *cmd_input, int *word_Count)
 {
 	char *cmd_Tokens;
@@ -90,39 +79,9 @@ int main(int argc, char **argv)
 		/* check for exit command */
 		exit_code_check(command, args);
 
-		for (i = 0; i < strlen(args[0]); i++)
-		{
-			char *path = getenv("PATH");
-			char *path_dir = strtok(path, ":");
-			if (args[0][i] != '/')
-			{
-				/* get the PATH environment Variables */
-				//char *path = getenv("PATH");
-				//char *path_dir = strtok(path, ":");
+		args[0] = cmd_check(args);
 
-				while (path_dir != NULL)
-				{
-					/*memory alloction for the full path to the command to become the new args[0]*/
-					char *p_arg0 = malloc(strlen(path_dir) + strlen(args[0]) + 1);
-					if (p_arg0 == NULL)
-					{
-						perror(argv[0]);
-						return(1);
-					}
-					/* to construct the full path to the command */
-					sprintf (p_arg0, "%s/%s", path_dir, args[0]);
-					if (access(p_arg0, X_OK) == 0)
-					{
-						printf("%s\n",p_arg0);
-						args[0] = p_arg0;
-						break;
-					}
-					free(p_arg0);
-				//	printf("%s\n", p_arg0);
-					path_dir =strtok(NULL, ":");
-				}
-			}
-		}
+		
 		process = fork();/*create child and parent processes */
 
 		if(process < 0) /* if any error */

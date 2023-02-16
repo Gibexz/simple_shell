@@ -14,5 +14,6 @@ extern char **environ;
 
 int main(int argc, char **argv);
 void exit_code_check(char *command, char **args);
+char *cmd_check(char **args);
 
 #endif
