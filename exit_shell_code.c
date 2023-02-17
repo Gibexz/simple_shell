@@ -1,9 +1,11 @@
 #include "main.h"
 
 /**
+ * exit_code_check - exit command code (with or without status)
+ * @command: point to command
+ * @args: pointer to arguments from tokenization of command
  *
- *
- *
+ * Return: nothing
  */
 void exit_code_check(char *command, char **args)
 {
@@ -19,6 +21,7 @@ void exit_code_check(char *command, char **args)
 		{
 			int num;
 			int i;
+
 			for (i = 0; i < strlen(args[1]); i++)
 			{
 				if ((args[1][i]) < 48 || (args[1][i]) < 57)
