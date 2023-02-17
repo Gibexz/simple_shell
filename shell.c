@@ -78,10 +78,9 @@ int main(int argc, char **argv)
 
 		/* check for exit command */
 		exit_code_check(command, args);
-
 		args[0] = cmd_check(args);
 
-		
+
 		process = fork();/*create child and parent processes */
 
 		if(process < 0) /* if any error */
@@ -104,9 +103,9 @@ int main(int argc, char **argv)
 			sleep(1);
 
 			//to free memory allocation for array of token(words)
-			/*for (j = 0; i < word_Count; j++)
-				free(args[j]);*/
-			//free(args);
+			for (j = 0; i < word_Count; j++)
+				free(args[j]);
+			free(args);
 			//free(command);
 		}
 	}
