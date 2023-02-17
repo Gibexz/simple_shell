@@ -1,43 +1,8 @@
 #include "main.h"
 
-
-char **tokens_array(char *cmd_input, int *word_Count)
-{
-	char *cmd_Tokens;
-	char **temp_args;
-	int i;
-
-	temp_args = malloc(strlen(cmd_input) * sizeof(char*));
-	if (temp_args == NULL)
-	{
-		perror("malloc:");
-		exit(1);
-	}
-
-	
-	cmd_Tokens = strtok(cmd_input, " \n");
-
-	i = 0;
-
-	while (cmd_Tokens != NULL)
-	{
-		temp_args[i] = malloc(sizeof(char) * strlen(cmd_Tokens) + 1);
-		if (temp_args[i] == NULL)
-		{
-			perror("malloc:");
-			exit(1);
-		}
-
-		strcpy(temp_args[i], cmd_Tokens);
-		i++;
-		cmd_Tokens = strtok(NULL, " \n");
-	}
-
-	*word_Count = i;
-	return (temp_args);
-
-}
 /**
+ *
+ *
  *
  */
 int main(int argc, char **argv)
@@ -79,7 +44,11 @@ int main(int argc, char **argv)
 		/* check for exit command */
 		exit_code_check(command, args);
 		args[0] = cmd_check(args);
-
+		if (access(args[0], F_OK) != 0)
+		{
+			perror("Error:");
+			return(1);
+		}
 
 		process = fork();/*create child and parent processes */
 
