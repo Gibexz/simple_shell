@@ -10,7 +10,7 @@
 int main(int argc __attribute__((unused)), char **argv)
 {
 	int word_Count;
-	char *command;
+	char *command, *sargs;
 	char **args = NULL;
 	size_t buffsize = 0;
 	pid_t process;
@@ -37,15 +37,19 @@ int main(int argc __attribute__((unused)), char **argv)
 		args = tokens_array(command, &word_Count);
 		exit_code_check(command, args);/* check for exit command */
 		/* checks the nature of args[0], returns executable command if possible */
+		sargs = args[0];/* pointer to orignal command before it is checked */
 		args[0] = cmd_check(args);
-		if (access(args[0], F_OK) != 0)/* checks if the args[0] is executable */
+		if (access(args[0], F_OK) == 0)/* checks if the args[0] is executable */
 		{
-			perror("Error:");
-			return (1);
+			process = fork();/*create child and parent processes */
+			/* Handles both child and perant processes */
+			fork_process(process, word_Count, args, argv);
 		}
-		process = fork();/*create child and parent processes */
-		/* Handles both child and perant processes */
-		fork_process(process, word_Count, args, argv);
+		else
+		{
+			printf("%s: no input files\n", sargs);
+			main(argc, argv);/* Recursion: calls the main funtion again*/
+		}
 	}
 	free(command);
 	return (0);
