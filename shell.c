@@ -10,7 +10,7 @@
 int main(int argc __attribute__((unused)), char **argv)
 {
 	int word_Count;
-	char *command;/**sargs*/
+	char *command;
 	char **args = NULL;
 	size_t buffsize = 0;
 	pid_t process;
