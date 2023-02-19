@@ -1,14 +1,17 @@
 #include "main.h"
 
 /**
+ * main - Entry point for simple shell c program
+ * @argc: unused argc attribute; number of arguments to main
+ * @argv: arguments to main
  *
- *
- *
+ * Return: 0
  */
 int main(int argc __attribute__((unused)), char **argv)
 {
-	int status, i, j, word_Count;
-	char *command;
+	int word_Count;
+	char *command;/**sargs*/
+	char **args = NULL;
 	size_t buffsize = 0;
 	pid_t process;
 	ssize_t input;
@@ -19,10 +22,8 @@ int main(int argc __attribute__((unused)), char **argv)
 		perror(argv[0]);
 		return (1);
 	}
-
 	while (1)
-	{
-		/* Check if the input is associated with the command line terminal */
+	{	/* Check if the input is associated with the command line terminal */
 		if (isatty(0) == 1)
 			printf("$ ");
 		input = getline(&command, &buffsize, stdin);
@@ -33,41 +34,23 @@ int main(int argc __attribute__((unused)), char **argv)
 			return (1);
 		}
 		/* Generate the command and its arguments to be executed */
-		char **args = tokens_array(command, &word_Count);
-		/* check for exit command */
-		exit_code_check(command, args);
+		args = tokens_array(command, &word_Count);
+		exit_code_check(command, args);/* check for exit command */
+		/* checks the nature of args[0], returns executable command if possible */
+		/*sargs = args[0];*//* pointer to orignal command before it is checked */
 		args[0] = cmd_check(args);
-		if (access(args[0], F_OK) != 0)
+		if (access(args[0], F_OK) == 0)/* checks if the args[0] is executable */
 		{
-			perror("Error:");
-			return (1);
+			process = fork();/*create child and parent processes */
+			/* Handles both child and perant processes */
+			fork_process(process, word_Count, args, argv);
 		}
-		process = fork();/*create child and parent processes */
-
-		if (process < 0) /* if any error */
+		else
 		{
-			perror("Error:");
-			return (1);
-		}
-		if (process == 0) /* if child process */
-		{
-			if (execve(args[0], args, environ) == -1)
-			{
-				perror(argv[0]);
-				return (1);
-			}
-		}
-		else /* if parent process */
-		{
-			wait(&status);
-			printf("Parent process\n");
-			sleep(1);
-			/*to free memory allocation for array of token(words)*/
-			for (j = 0; i < word_Count; j++)
-				free(args[j]);
-			free(args);
-			/*free(command);*/
+			printf("%s: No such file or directoey\n", argv[0]);
+			main(argc, argv);/* Recursion: calls the main funtion again*/
 		}
 	}
+	free(command);
 	return (0);
 }

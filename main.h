@@ -11,6 +11,7 @@ extern char **environ;
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <stdbool.h>
+#include <sys/stat.h>
 
 int main(int argc, char **argv);
 void exit_code_check(char *command, char **args);
