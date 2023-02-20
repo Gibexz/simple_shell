@@ -20,7 +20,7 @@ void exit_code_check(char *command, char **args)
 		else if ((args[1] != NULL) && (args[2] == NULL))
 		{
 			int num;
-			int i;
+			size_t i;
 
 			for (i = 0; i < strlen(args[1]); i++)
 			{

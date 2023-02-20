@@ -4,14 +4,17 @@
  * main - Entry point for simple shell c program
  * @argc: unused argc attribute; number of arguments to main
  * @argv: arguments to main
- *
+ * 1 - Generate the command and its arguments to be executed
+ * 2 - checks the nature of args[0], returns executable command if possible
+ * 3 - Handles both child and perant processes
+ * 4 -
  * Return: 0
  */
 int main(int argc __attribute__((unused)), char **argv)
 {
 	int word_Count;
 	char *command = NULL;
-	char **args = NULL;
+	char **args = NULL, *dollar = "$ ";
 	size_t buffsize = 1028;
 	pid_t process;
 	ssize_t input;
@@ -25,25 +28,21 @@ int main(int argc __attribute__((unused)), char **argv)
 	while (1)
 	{	/* Check if the input is associated with the command line terminal */
 		if (isatty(0) == 1)
-			printf("$ ");
-		input = getline(&command, &buffsize, stdin);
+			write(1, dollar, strlen(dollar));
+		input = _getline(&command, &buffsize, stdin);
 		if (input == -1)
 		{
 			perror(argv[0]);
 			free(command);
 			return (1);
 		}
-		/* Generate the command and its arguments to be executed */
-		args = tokens_array(command, &word_Count);
+		args = tokens_array(command, &word_Count);/* 1 */
 		exit_code_check(command, args);/* check for exit command */
-		/* checks the nature of args[0], returns executable command if possible */
-		/*sargs = args[0];*//* pointer to orignal command before it is checked */
-		args[0] = cmd_check(args);
+		args[0] = cmd_check(args);/* 2 */
 		if (access(args[0], F_OK) == 0)/* checks if the args[0] is executable */
 		{
 			process = fork();/*create child and parent processes */
-			/* Handles both child and perant processes */
-			fork_process(process, word_Count, args, argv);
+			fork_process(process, word_Count, args, argv);/* 3 */
 		}
 		else
 		{

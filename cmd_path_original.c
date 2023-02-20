@@ -10,7 +10,7 @@
  */
 char *cmd_check(char **args)
 {
-	int i;
+	int len;
 	char *new_Path = NULL;
 		/*free(new_Path)*/
 		if (args[0][0] != '/')
@@ -19,7 +19,7 @@ char *cmd_check(char **args)
 			char new_args0[100] = "/bin/";
 
 			strcat(new_args0, args[0]);
-			int len = strlen(new_args0) + 1;
+			len = strlen(new_args0) + 1;
 
 			new_Path = malloc(len);
 			if (new_Path == NULL)
@@ -35,7 +35,7 @@ char *cmd_check(char **args)
 			char new_args0[100] = "";
 
 			strcat(new_args0, args[0]);
-			int len = strlen(new_args0) + 1;
+			len = strlen(new_args0) + 1;
 
 			new_Path = malloc(len);
 			if (new_Path == NULL)
