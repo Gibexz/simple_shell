@@ -12,7 +12,7 @@ int main(int argc __attribute__((unused)), char **argv)
 	int word_Count;
 	char *command = NULL;
 	char **args = NULL;
-	size_t buffsize = 1028;
+	int buffsize = 1028;
 	pid_t process;
 	ssize_t input;
 
@@ -26,13 +26,13 @@ int main(int argc __attribute__((unused)), char **argv)
 	{	/* Check if the input is associated with the command line terminal */
 		if (isatty(0) == 1)
 			printf("$ ");
-		input = getline(&command, &buffsize, stdin);
-		if (input == -1)
+		fgets(command, buffsize, stdin);
+		/*if (input == -1)
 		{
 			perror(argv[0]);
 			free(command);
 			return (1);
-		}
+		}*/
 		/* Generate the command and its arguments to be executed */
 		args = tokens_array(command, &word_Count);
 		exit_code_check(command, args);/* check for exit command */

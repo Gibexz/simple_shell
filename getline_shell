@@ -26,7 +26,7 @@ int main(int argc __attribute__((unused)), char **argv)
 	{	/* Check if the input is associated with the command line terminal */
 		if (isatty(0) == 1)
 			printf("$ ");
-		input = getline(&command, &buffsize, stdin);
+		input = _getline(&command, &buffsize, stdin);
 		if (input == -1)
 		{
 			perror(argv[0]);

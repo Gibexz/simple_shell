@@ -19,6 +19,7 @@ void fork_process(pid_t process, int word_Count, char **args, char **argv)
 	}
 	if (process == 0) /* if child process */
 	{
+		printf("Child process\n");
 		if (execve(args[0], args, environ) == -1)
 		{
 			perror(argv[0]);
