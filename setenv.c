@@ -19,13 +19,13 @@ void _setenv(char **args, int argc, char **argv)
 	{
 		fprintf(stderr, "setenv: No Variable\n");
 		main(argc, argv);
-	//	else if (args[2] == NULL)
-	//	{
-	//		if (getenv(args[1]) == NULL)
-	//		{
-	//			setenv(args[1], "", 1);
-	//		}
-	//	}
+	/*	else if (args[2] == NULL)*/
+	/*	{*/
+	/*		if (getenv(args[1]) == NULL)*/
+	/*		{*/
+	/*			setenv(args[1], "", 1);*/
+	/*		}*/
+	/*	}*/
 	}
 	if (setenv(args[1], args[2], 1) != 0)
 	{

@@ -1,18 +1,19 @@
 #include "main.h"
 
 /**
+ * _strtok - string tokenizing function
+ * @command: inputed string
+ * @delim: string breaker character(s)
  *
- *
- *
- *
+ * Return: char pointers to strings
  */
-char *_strtok(char *str, const char *delim)
+char *_strtok(char *command, const char *delim)
 {
 	char *start, *end;
-	static char *last_str = NULL;
+	static char *last_str;
 
 	if (str != NULL)
-		last_str = str;
+		last_str = command;
 	if (last_str == NULL)
 		return (NULL);
 
