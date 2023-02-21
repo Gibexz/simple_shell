@@ -13,8 +13,7 @@
 int main(int argc __attribute__((unused)), char **argv)
 {
 	int word_Count;
-	char *command = NULL;
-	char **args = NULL, *dollar = "$ ";
+	char *command = NULL, **args = NULL, *dollar = "$ ";
 	size_t buffsize = 1028;
 	pid_t process;
 	ssize_t input;
@@ -37,11 +36,11 @@ int main(int argc __attribute__((unused)), char **argv)
 			return (1);
 		}
 		args = tokens_array(command, &word_Count);/* 1 */
-		exit_code_check(command, args);/* check for exit command */
+		command_code_check(command, args, argc, argv);/* check for exit command */
 		args[0] = cmd_check(args);/* 2 */
 		if (access(args[0], F_OK) == 0)/* checks if the args[0] is executable */
 		{
-			process = fork();/*create child and parent processes */
+			process = fork();/*creates child and parent processes */
 			fork_process(process, word_Count, args, argv);/* 3 */
 		}
 		else

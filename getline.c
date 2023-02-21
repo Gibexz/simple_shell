@@ -43,7 +43,7 @@ ssize_t _getline(char **command, size_t *buffsize, FILE *stream)
 		if (cmd_buffer[n - 1] == '\n')
 		{
 			*command = cmd_buffer;
-			printf("%lu, %lu\n", n, i);
+			/*printf("%lu, %lu\n", n, i);*/
 			return (n);
 		}
 	}
