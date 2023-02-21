@@ -2,6 +2,7 @@
 
 /**
  * exit_code - exit code program for the shell
+ * @command: command string
  * @args: command arguments passed
  *
  * Return: Nothing
