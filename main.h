@@ -1,64 +1,81 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-/*define evironment */
-extern char **environ;
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include <sys/wait.h>
 #include <sys/types.h>
-#include <stdbool.h>
 #include <sys/stat.h>
-#include <stdarg.h>
+#include <sys/wait.h>
+#include <limits.h>
+#include <signal.h>
 
 
 /**
- * struct print - created stuct troe print_struct
- * @t: pointer to character speccifer
- * @funct: function pointer to check_spec code for the
- * respective character
+ * struct variables - variables
+ * @av: command line arguments
+ * @buffer: buffer of command
+ * @env: environment variables
+ * @count: count of commands entered
+ * @argv: arguments at opening of shell
+ * @status: exit status
+ * @commands: double pointer to commands
  */
-typedef struct print
+typedef struct variables
 {
-	char *t;
-	int (*funct)(va_list);
-} print_struct;
+	char **av;
+	char *buffer;
+	char **env;
+	size_t count;
+	char **argv;
+	int status;
+	char **commands;
+} vars_t;
 
-int main(int argc, char **argv);
-void command_code_check(char *command, char **args, int argc, char **argv);
-char **tokens_array(char *cmd_input, int *word_Count);
-char *cmd_check(char **args);
-void fork_process(pid_t process, char **args, char **argv);
-ssize_t _getline(char **command, size_t *buffsize, FILE* stream);
-char *_strtok(char *str, const char *delim);
-/* In command_code_ check */
-void _setenv(char **args, int argc, char **argv);
-void _unsetenv(char **args, int argc, char **argv);
-void exit_code(char *command, char **args);
-void print_env(char **env);
-unsigned int check_match(char c, const char *str);/* used in _strtok */
-/*void do_setenv(char **args);*/
+/**
+ * struct builtins - struct for the builtin functions
+ * @name: name of builtin command
+ * @f: function for corresponding builtin
+ */
+typedef struct builtins
+{
+	char *name;
+	void (*f)(vars_t *);
+} builtins_t;
 
-/* string functions and atoi */
-int _strlen(char *msg);
-char *_strcat(char *dest, char *src);
-char *_strcpy(char *dest, char *src);
-char *_strdup(char *str);
-int _strcmp(char *s1, char *s2);
-int is_numerical(unsigned int n);
-int _atoi(char *s);
-void _puts(char *str);
+char **make_env(char **env);
+void free_env(char **env);
 
-/*Printf files */
-int (*check_specifier(const char *format))(va_list);
-int _putchar(char c);
-int _printf(const char *format, ...);
-int print_c(va_list ap);
-int print_s(va_list ap);
-int print_int(va_list ap);
-int print_deci(va_list ap);
+ssize_t _puts(char *str);
+char *_strdup(char *strtodup);
+int _strcmpr(char *strcmp1, char *strcmp2);
+char *_strcat(char *strc1, char *strc2);
+unsigned int _strlen(char *str);
 
-#endif
+char **tokenize(char *buffer, char *delimiter);
+char **_realloc(char **ptr, size_t *size);
+char *new_strtok(char *str, const char *delim);
+
+void (*check_for_builtins(vars_t *vars))(vars_t *vars);
+void new_exit(vars_t *vars);
+void _env(vars_t *vars);
+void new_setenv(vars_t *vars);
+void new_unsetenv(vars_t *vars);
+
+void add_key(vars_t *vars);
+char **find_key(char **env, char *key);
+char *add_value(char *key, char *value);
+int _atoi(char *str);
+
+void check_for_path(vars_t *vars);
+int path_execute(char *command, vars_t *vars);
+char *find_path(char **env);
+int execute_cwd(vars_t *vars);
+int check_for_dir(char *str);
+
+void print_error(vars_t *vars, char *msg);
+void _puts2(char *str);
+char *_uitoa(unsigned int count);
+
+#endif /* _SHELL_H_ */
