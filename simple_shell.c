@@ -14,19 +14,19 @@ int main(int argc __attribute__((unused)), char **argv)
 {
 	int word_Count, status, j;
 	size_t buffsize = 1028;
-	char *command = malloc(sizeof(char) * buffsize), **args = NULL;
+	char *command = malloc(sizeof(char) * buffsize), **args = NULL, *temp;
 	pid_t process;
-	ssize_t input;
+	static int num = 0;
 
 	while (1)
 	{	/* Check if the input is associated with the command line terminal */
 		if (isatty(0) == 1)
 			printf("$ ");/*write(1, dollar, strlen(dollar));*/
-		input = getline(&command, &buffsize, stdin);
-		if (input == -1)
-			return (1);
+		num++;
+		getline(&command, &buffsize, stdin);
 		args = tokens_array(command, &word_Count);/* 1 */
 		command_code_check(command, args, argc, argv);/* check for exit command */
+		temp = args[0];
 		args[0] = cmd_check(args);/* 2 */
 		if (access(args[0], F_OK) == 0)/* checks if the args[0] is executable */
 		{
@@ -44,7 +44,7 @@ int main(int argc __attribute__((unused)), char **argv)
 		}
 		else
 		{
-			printf("%s: No such file or directory\n", argv[0]);
+			printf("%s: %d: %s: not found\n", argv[0], num, temp);
 			if (isatty(0) != 1)
 				break;
 			main(argc, argv);/* Recursion: calls the main funtion again*/
