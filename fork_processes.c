@@ -28,8 +28,6 @@ void fork_process(pid_t process, int word_Count, char **args, char **argv)
 	else /* if parent process */
 	{
 		wait(&status);
-		/*printf("Parent process\n");*/
-		/*sleep(1);*/
 		if (args != NULL)
 		{ /*to free memory allocation for array of token(words)*/
 			for (j = 1; j < word_Count; j++)
