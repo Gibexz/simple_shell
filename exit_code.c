@@ -18,13 +18,13 @@ void exit_code(char *command, char **args)
 	else if ((args[1] != NULL) && (args[2] == NULL))
 	{
 		int num;
-		size_t i;
+		int i;
 
-		for (i = 0; i < strlen(args[1]); i++)
+		for (i = 0; i < _strlen(args[1]); i++)
 		{
 			if ((args[1][i]) < 48 || (args[1][i]) < 57)
 			{
-				num = atoi(args[1]);
+				num = _atoi(args[1]);
 				free(args);
 				free(command);
 				exit(num);

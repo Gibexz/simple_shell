@@ -17,7 +17,7 @@ void _setenv(char **args, int argc, char **argv)
 		count += 1;
 	if (i != 3)
 	{
-		fprintf(stderr, "setenv: No Variable\n");
+		_puts("setenv: No Variable\n");
 		main(argc, argv);
 	/*	else if (args[2] == NULL)*/
 	/*	{*/

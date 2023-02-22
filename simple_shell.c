@@ -21,7 +21,7 @@ int main(int argc __attribute__((unused)), char **argv)
 	while (1)
 	{	/* Check if the input is associated with the command line terminal */
 		if (isatty(0) == 1)
-			printf("$ ");/*write(1, dollar, strlen(dollar));*/
+			_puts("$ ");/*write(1, dollar, strlen(dollar));*/
 		num++;
 		getline(&command, &buffsize, stdin);
 		args = tokens_array(command, &word_Count);/* 1 */
@@ -44,7 +44,7 @@ int main(int argc __attribute__((unused)), char **argv)
 		}
 		else
 		{
-			printf("%s: %d: %s: not found\n", argv[0], num, temp);
+			_printf("%s: %d: %s: not found\n", argv[0], num, temp);
 			if (isatty(0) != 1)
 				break;
 			main(argc, argv);/* Recursion: calls the main funtion again*/

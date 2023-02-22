@@ -10,12 +10,12 @@
  */
 void command_code_check(char *command, char **args, int argc, char **argv)
 {
-	if (strcmp(args[0], "exit") == 0)
+	if (_strcmp(args[0], "exit") == 0)
 		exit_code(command, args);
-	if (strcmp(args[0], "setenv") == 0)
+	if (_strcmp(args[0], "setenv") == 0)
 		_setenv(args, argc, argv);
-	/*if (strcmp(args[0], "env") == 0)*/
+	/*if (_strcmp(args[0], "env") == 0)*/
 		/*print_env(args);*/
-	if (strcmp(args[0], "unsetenv") == 0)
+	if (_strcmp(args[0], "unsetenv") == 0)
 		_unsetenv(args, argc, argv);
 }

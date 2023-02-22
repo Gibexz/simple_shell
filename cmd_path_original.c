@@ -18,8 +18,8 @@ char *cmd_check(char **args)
 			/* A basic command directory */
 			char new_args0[100] = "/bin/";
 
-			strcat(new_args0, args[0]);
-			len = strlen(new_args0) + 1;
+			_strcat(new_args0, args[0]);
+			len = _strlen(new_args0) + 1;
 
 			new_Path = malloc(len);
 			if (new_Path == NULL)
@@ -27,15 +27,15 @@ char *cmd_check(char **args)
 				perror("malloc:");
 				exit(1);
 			}
-			strcpy(new_Path, new_args0);
+			_strcpy(new_Path, new_args0);
 			return (new_Path);
 		}
 		else
 		{
 			char new_args0[100] = "";
 
-			strcat(new_args0, args[0]);
-			len = strlen(new_args0) + 1;
+			_strcat(new_args0, args[0]);
+			len = _strlen(new_args0) + 1;
 
 			new_Path = malloc(len);
 			if (new_Path == NULL)
@@ -43,7 +43,7 @@ char *cmd_check(char **args)
 				perror("malloc:");
 				exit(1);
 			}
-			strcpy(new_Path, new_args0);
+			_strcpy(new_Path, new_args0);
 			return (new_Path);
 		}
 		return (NULL);

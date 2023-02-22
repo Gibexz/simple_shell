@@ -13,7 +13,7 @@ char **tokens_array(char *cmd_input, int *word_Count)
 	char **temp_args;
 	int i;
 
-	temp_args = malloc(strlen(cmd_input) * sizeof(char *));
+	temp_args = malloc(_strlen(cmd_input) * sizeof(char *));
 	if (temp_args == NULL)
 	{
 		perror("malloc:");
@@ -24,14 +24,14 @@ char **tokens_array(char *cmd_input, int *word_Count)
 	i = 0;
 	while (cmd_Tokens != NULL)
 	{
-		temp_args[i] = malloc(sizeof(char) * strlen(cmd_Tokens) + 1);
+		temp_args[i] = malloc(sizeof(char) * _strlen(cmd_Tokens) + 1);
 		if (temp_args[i] == NULL)
 		{
 			perror("malloc:");
 			exit(1);
 }
 
-		strcpy(temp_args[i], cmd_Tokens);
+		_strcpy(temp_args[i], cmd_Tokens);
 		i++;
 		cmd_Tokens = strtok(NULL, " \n");
 	}

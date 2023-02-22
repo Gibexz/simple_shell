@@ -18,15 +18,14 @@ void _unsetenv(char **args, int argc, char **argv)
 		count += 1;
 	if (i != 2)
 	{
-		fprintf(stderr, "setenv: No Variable\n");
+		_puts("setenv: No Variable\n");
 		main(argc, argv);
 	}
 
 	check_env = getenv(args[1]);
 	if (check_env == NULL)
 	{
-		fprintf(stderr,
-			"The Environment Variable %s is invalid\n", args[1]);
+		_printf("The Environment Variable %s is invalid\n", args[1]);
 		main(argc, argv);
 	}
 	if (unsetenv(args[1]) != 0)
