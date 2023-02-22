@@ -17,7 +17,7 @@ int main(int argc, char **argv);
 void command_code_check(char *command, char **args, int argc, char **argv);
 char **tokens_array(char *cmd_input, int *word_Count);
 char *cmd_check(char **args);
-void fork_process(pid_t process, int word_Count, char **args, char **argv);
+void fork_process(pid_t process, char **args, char **argv);
 ssize_t _getline(char **command, size_t *buffsize, FILE* stream);
 char *_strtok(char *str, const char *delim);
 

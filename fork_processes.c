@@ -9,9 +9,9 @@
  *
  * Return: Nothing
  */
-void fork_process(pid_t process, int word_Count, char **args, char **argv)
+void fork_process(pid_t process, char **args, char **argv)
 {
-	int status, j;
+	/*int status, j;*/
 
 	if (process < 0) /* if any error */
 	{
@@ -25,14 +25,14 @@ void fork_process(pid_t process, int word_Count, char **args, char **argv)
 			perror(argv[0]);
 		}
 	}
-	else /* if parent process */
-	{
-		wait(&status);
-		if (args != NULL)
-		{ /*to free memory allocation for array of token(words)*/
-			for (j = 1; j < word_Count; j++)
-				free(args[j]);
-			free(args);
-		}
-	}
+	/*else  if parent process */
+	/*{*/
+	/*	wait(&status);*/
+	/*	if (args != NULL)*/
+	/*	{ *to free memory allocation for array of token(words)*/
+	/*		for (j = 1; j < word_Count; j++)*/
+	/*			free(args[j]);*/
+	/*		free(args);*/
+	/*	}*/
+	/*}*/
 }

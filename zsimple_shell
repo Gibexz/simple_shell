@@ -13,11 +13,12 @@
 int main(int argc __attribute__((unused)), char **argv)
 {
 	int word_Count, status, j;
+	char *command = NULL, **args = NULL;/* *dollar = "$ ";*/
 	size_t buffsize = 1028;
-	char *command = malloc(sizeof(char) * buffsize), **args = NULL;
 	pid_t process;
 	ssize_t input;
 
+	command = malloc(sizeof(char) * buffsize);
 	while (1)
 	{	/* Check if the input is associated with the command line terminal */
 		if (isatty(0) == 1)
