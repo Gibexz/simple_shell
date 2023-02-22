@@ -17,7 +17,7 @@ void print_env(char **env)
 	{
 		while (env[i] != NULL)
 		{
-			printf("%s\n", env[i]);
+			_printf("%s\n", env[i]);
 			i++;
 		}
 	}
@@ -25,7 +25,7 @@ void print_env(char **env)
 	{
 		while (env[i] != NULL)
 		{
-			printf("%s\n", env[i]);
+			_printf("%s\n", env[i]);
 			i++;
 		}
 		exit(0);
