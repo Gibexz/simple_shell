@@ -16,7 +16,7 @@ int main(int argc __attribute__((unused)), char **argv)
 	size_t buffsize = 1028;
 	char *command = malloc(sizeof(char) * buffsize), **args = NULL, *temp;
 	pid_t process;
-	static int num = 0;
+	static int num;
 
 	while (1)
 	{	/* Check if the input is associated with the command line terminal */
