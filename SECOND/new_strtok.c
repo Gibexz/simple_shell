@@ -21,13 +21,13 @@ unsigned int check_match(char c, const char *str)
 }
 
 /**
- * _strtok - custom strtok
+ * new_strtok - custom strtok
  * @str: string to tokenize
  * @delim: delimiter to tokenize against
  *
  * Return: pointer to the next token or NULL
  */
-char *_strtok(char *str, const char *delim)
+char *new_strtok(char *str, const char *delim)
 {
 	static char *token_start;
 	static char *next_token;
