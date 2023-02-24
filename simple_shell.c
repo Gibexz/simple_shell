@@ -1,55 +1,68 @@
 #include "main.h"
 
-/**
- * main - Entry point for simple shell c program
- * @argc: unused argc attribute; number of arguments to main
- * @argv: arguments to main
- * 1 - Generate the command and its arguments to be executed
- * 2 - checks the nature of args[0], returns executable command if possible
- * 3 - Handles both child and perant processes
- * 4 -
- * Return: 0
- */
-int main(int argc __attribute__((unused)), char **argv)
-{
-	int word_Count, status, j;
-	size_t buffsize = 1028;
-	char *command = malloc(sizeof(char) * buffsize), **args = NULL, *temp;
-	pid_t process;
-	static int num;
+/* global variable for ^C handling */
+unsigned int sig_flag;
 
-	while (1)
-	{	/* Check if the input is associated with the command line terminal */
-		if (isatty(0) == 1)
-			_puts("$ ");/*write(1, dollar, strlen(dollar));*/
-		num++;
-		getline(&command, &buffsize, stdin);
-		args = tokens_array(command, &word_Count);/* 1 */
-		command_code_check(command, args, argc, argv);/* check for exit command */
-		temp = args[0];
-		args[0] = cmd_check(args);/* 2 */
-		if (access(args[0], F_OK) == 0)/* checks if the args[0] is executable */
+/**
+ * sig_handler - handles ^C signal interupt
+ * @uuv: unused variable (required for signal function prototype)
+ *
+ * Return: void
+ */
+static void sig_handler(int uuv)
+{
+	(void) uuv;
+	if (sig_flag == 0)
+		_puts("\n$ ");
+	else
+		_puts("\n");
+}
+
+/**
+ * main - main function: Entry point
+ * @argc: nos of arguments passed to main
+ * @argv: array of arguments passed to main
+ * @environment: array of environment variables
+ *
+ * Return: 0 or exit status, or ?
+ */
+int main(int argc __attribute__((unused)), char **argv, char **environment)
+{
+	size_t len_buffer = 0;
+	unsigned int is_pipe = 0, i;
+	vars_t vars = {NULL, NULL, NULL, 0, NULL, 0, NULL};
+
+	vars.argv = argv;
+	vars.env = make_env(environment);
+	signal(SIGINT, sig_handler);
+	if (!isatty(STDIN_FILENO))
+		is_pipe = 1;
+	if (is_pipe == 0)
+		_puts("$ ");
+	sig_flag = 0;
+	while (getline(&(vars.buffer), &len_buffer, stdin) != -1)
+	{
+		sig_flag = 1;
+		vars.count++;
+		vars.commands = tokenize(vars.buffer, ";");
+		for (i = 0; vars.commands && vars.commands[i] != NULL; i++)
 		{
-			process = fork();/*creates child and parent processes */
-			fork_process(process, args, argv);/* 3 */
-			wait(&status);
-			if (args != NULL)
-			{
-				for (j = 1; j < word_Count; j++)
-					free(args[j]);
-				free(args);
-			}
-			if (isatty(0) != 0)
-				main(argc, argv);
+			vars.av = tokenize(vars.commands[i], "\n \t\r");
+			if (vars.av && vars.av[0])
+				if (check_for_builtins(&vars) == NULL)
+					check_for_path(&vars);
+			free(vars.av);
 		}
-		else
-		{
-			_printf("%s: %d: %s: not found\n", argv[0], num, temp);
-			if (isatty(0) != 1)
-				break;
-			main(argc, argv);/* Recursion: calls the main funtion again*/
-		}
+		free(vars.buffer);
+		free(vars.commands);
+		sig_flag = 0;
+		if (is_pipe == 0)
+			_puts("$ ");
+		vars.buffer = NULL;
 	}
-	free(command);
-	return (0);
+	if (is_pipe == 0)
+		_puts("\n");
+	free_env(vars.env);
+	free(vars.buffer);
+	exit(vars.status);
 }
